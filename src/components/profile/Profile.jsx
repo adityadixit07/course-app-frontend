@@ -33,22 +33,29 @@ const fileUploadCSS = {
 
 const Profile = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const user = {
-    name: 'Aditya Kumar Dixit',
-    email: 'aditya@gmail.com',
-    createdAt: String(new Date().toISOString()),
-    role: 'user',
-    subscription: {
-      status: 'active',
-    },
-    playlist: [
-      {
-        course: 'dsa+sysyem-design',
-        poster:
-          'https://img.freepik.com/premium-vector/coder-developer-concentrated-working-project-developing-programming-coding-technologies_569013-336.jpg?w=740',
+  const userDetail = JSON.parse(localStorage.getItem('userDetails'));
+  console.log(userDetail.user);
+  let user = {};
+  if (userDetail) {
+    user = {
+      name: userDetail.user.name,
+      email: userDetail.user.email,
+      createdAt: userDetail.user.createdAt.substring(0, 10),
+      role: userDetail.user.role,
+      subscription: {
+        status:userDetail.user.subscription.status,
       },
-    ],
-  };
+      playlist: [
+        {
+          course: "System Design + Javascript",
+          // course: userDetail.user.playlist.course,
+          poster:
+            'https://img.freepik.com/premium-vector/coder-developer-concentrated-working-project-developing-programming-coding-technologies_569013-336.jpg?w=740',
+            // userDetail.user.playlist.poster 
+        },
+      ],
+    };
+  }
 
   const removeFromPlayListHandler = id => {
     console.log(id);
@@ -56,6 +63,7 @@ const Profile = () => {
   const changeImageSubmitHandler = (e, image) => {
     e.preventDefault();
   };
+
 
   return (
     <Container minH={'95vh'} maxW={'container.lg'} py={'8'}>
@@ -89,7 +97,7 @@ const Profile = () => {
           </HStack>
           <HStack>
             <Text children="Created At" fontWeight={'bold'} />
-            <Text children={user.createdAt.split('T')[0]} />
+            <Text children={user.createdAt} />
           </HStack>
           {user.role !== 'admin' && (
             <HStack>

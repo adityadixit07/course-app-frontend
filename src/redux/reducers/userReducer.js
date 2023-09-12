@@ -1,7 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 
+// create reducer pahle initial state lega
 export const userReducer = createReducer(
-  {},
+  {
+    loading: false,
+    isLogged: false,
+    message: null,
+    error: null,
+    user: null,
+  },
   {
     loginRequest: state => {
       state.loading = true;
@@ -20,7 +27,7 @@ export const userReducer = createReducer(
     clearError: state => {
       state.error = null;
     },
-    clearMessae: state => {
+    clearMessage: state => {
       state.message = null;
     },
   }

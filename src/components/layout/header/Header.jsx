@@ -13,16 +13,19 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { RiMenu5Fill } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 const Header = ({isAuthenticated=false,user}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-
-// const logoutHandler=()=>{
-//   console.log('logout successfully')
-//   onClose();
-// }
+  const navigate=useNavigate();
+const logoutHandler=()=>{
+  localStorage.clear();
+  toast.success("Logout successfully")
+  onClose();
+  navigate("/")
+}
+const isLoggedIn=localStorage.getItem("userDetails");
   return (
     <>
       <ColorModeSwitcher />
@@ -68,7 +71,7 @@ const Header = ({isAuthenticated=false,user}) => {
                 bottom={'2'}
                 width={'80%'}
               >
-                {isAuthenticated ? (
+                {isLoggedIn ? (
                   <>
                     <VStack>
                       <HStack>
@@ -77,7 +80,7 @@ const Header = ({isAuthenticated=false,user}) => {
                             Profile
                           </Button>
                         </Link>
-                        <Button variant={'outline'} colorScheme="red" onClick={onClose}> 
+                        <Button variant={'outline'} colorScheme="red" onClick={logoutHandler}> 
                           <RiLogoutCircleRLine style={{ margin: '3px' }} />
                           Logout
                         </Button>
