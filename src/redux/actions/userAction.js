@@ -1,30 +1,41 @@
-import { server } from '../Store';
-import axios from 'axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import API from '../../helper/API';
 
-export const login = (email, password) => async dispatch => {
-  try {
-    dispatch({ type: 'loginRequest' });
-    const config={
-      headers:{
-        "Content-type":"application/json",
-        // credentials:true
+export const loginAction = createAsyncThunk(
+  '/login',
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const res = await API.post('/login', { email, password });
+      const { data } = res;
+      if (data?.success) {
+        return data;
+      }
+    } catch (error) {
+      if (error?.response && error?.response?.data?.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
       }
     }
-    const { data } = await axios.post(
-      `${server}/login`,
-      { email, password },
-        config,
-    );
-    console.log(data);
-    dispatch({ type: 'loginSuccess', paylaod: data });
-  } catch (err) {
-    console.log(err);
-    dispatch({
-      type: 'loginFail',
-      paylaod:
-        err.response && err.response.data.message
-          ? err.response.data.message
-          : err.message,
-    });
   }
-};
+);
+
+// get my profile section
+export const getMyProfile = createAsyncThunk(
+  '/me',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await API.get('/me');
+      const { data } = res;
+      if (data?.success) {
+        return data;
+      }
+    } catch (error) {
+      if (error?.response && error?.response?.data?.message) {
+        return rejectWithValue(error.response.data.message);
+      } else {
+        return rejectWithValue(error.message);
+      }
+    }
+  }
+);

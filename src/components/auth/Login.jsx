@@ -7,43 +7,19 @@ import {
   Input,
   VStack,
 } from '@chakra-ui/react';
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginAction } from '../../redux/actions/userAction';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-const navigate=useNavigate();
-  useEffect(()=>{
-    const user=localStorage.getItem("userDetails");
-    if(user){
-      navigate("/");
-    }
-  },[navigate])
-  const doLogin = async () => {
-    const config = {
-      headers: {
-        'Content-type': 'application/json',
-        credentials: true,
-      },
-    };
-    try {
-      const { data } = await axios.post(
-        'http://localhost:4500/api/v1/login',
-        { email, password },
-        config
-      );
-      localStorage.setItem('userDetails', JSON.stringify(data));
-      navigate("/courses")
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const loginHandler = e => {
+  const dispatch = useDispatch();
+  const loginHandler = async e => {
     e.preventDefault();
-    doLogin();
+    dispatch(loginAction({ email, password }));
   };
+
   return (
     <Container h={'95vh'}>
       <VStack justifyContent={'center'} spacing={'10'} h={'full'}>

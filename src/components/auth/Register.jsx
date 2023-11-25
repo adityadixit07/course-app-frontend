@@ -40,8 +40,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [imagePrev, setImagePrev] = useState('');
   const [image, setImage] = useState('');
-
-  const formSubmitHandler = (e) => {
+  const formSubmitHandler = e => {
     e.preventDefault();
   };
   return (
@@ -94,7 +93,6 @@ const Login = () => {
           <Box marginY={'4'}>
             <FormLabel htmlFor="chooseAvatar" children="Choose Avatar" />
             <Input
-              required
               type="file"
               id="chooseAvatar"
               placeholder={'choose Avatar'}

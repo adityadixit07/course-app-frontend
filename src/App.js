@@ -24,27 +24,30 @@ import CreateCourse from './components/admin/createcourse/CreateCourse';
 import AdminCourses from './components/admin/admincourses/AdminCourses';
 import Users from './components/admin/users/Users';
 import { useDispatch, useSelector } from 'react-redux';
-import { Toaster, toast } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+import { clearError, clearMessage } from './redux/reducers/authSlice';
+import { getMyProfile } from './redux/actions/userAction';
 
 function App() {
-  // window.addEventListener('contextmenu', e => {
-  //   e.preventDefault();
-  // });
-
-  const { isAuthenticated, user, message, error } = useSelector(
+  const { isAuthenticated, user, error, message } = useSelector(
     state => state.user
   );
   const dispatch = useDispatch();
   useEffect(() => {
     if (error) {
       toast.error(error);
-      dispatch({ type: 'clearError' });
+      dispatch(clearError());
     }
     if (message) {
       toast.success(message);
-      dispatch({ type: 'clearMessage' });
+      dispatch(clearMessage());
     }
   }, [dispatch, error, message]);
+
+  useEffect(() => {
+    dispatch(getMyProfile());
+  }, [dispatch]);
+
   return (
     <BrowserRouter>
       <Header isAuthenticated={isAuthenticated} user={user} />

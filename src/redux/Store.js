@@ -1,15 +1,16 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { userReducer } from './reducers/userReducer';
+import { configureStore } from '@reduxjs/toolkit';
+import authSlice from './reducers/authSlice';
 
 // export const server = 'https://course-backend-x669.onrender.com/api/v1';
-export const server = 'http://localhost:4500/api/v1';
-
-const reducer = combineReducers({
-  user: userReducer,
-});
-
 const store = configureStore({
-  reducer,
+  reducer: {
+    user: authSlice.reducer,
+    // course:courseReducer,
+    // cart:cartReducer,
+    // order:orderReducer,
+    // admin:adminReducer,
+    // review:reviewReducer
+  },
 });
 
 export default store;
